@@ -22,10 +22,32 @@ let io = socketIO(server);
 io.on('connection', (socket) => {
     console.log('new user connected');
 
+    socket.emit('newEmail', {
+        from: "sam@example.com",
+        text: "Yoo whats up how are you?",
+        createdAt: 123
+    });
+
+    socket.emit('newMessage', {
+        from: "sam",
+        text: "Yoo whats up how are you?",
+        createdAt: 123
+    });
+
+    socket.on('createEmail', (newEmail) => {
+        console.log('createEmail', newEmail);
+    });
+
+    socket.on('createMessage', (newMessage) => {
+        console.log('createMessage', newMessage);
+    });
+
     socket.on('disconnect', () => {
         console.log('was disconnected')
     })
 });
+
+
 
 
 app.use(express.static(publicPath));
