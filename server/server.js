@@ -4,9 +4,11 @@ const path = require('path');
 const http = require('http');
 const publicPath = path.join(__dirname, '../public')
 
+
 const express = require('express');
 const socketIO = require('socket.io');
 
+const {generateMessage} = require('./utils/message'); 
 // understand path module
 console.log(__dirname + '/../public');
 console.log(publicPath);
@@ -22,19 +24,9 @@ let io = socketIO(server);
 io.on('connection', (socket) => {
     console.log('new user connected');
 
-    socket.emit('newMessage', {
-        from: 'Admin',
-        text: 'Welcome to the chat app',
-        createdAt: new Date().getTime()
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
 
-    });
-
-    socket.broadcast.emit('newMessage', {
-        from: 'Admin',
-        text: 'New user has joined',
-        createdAt: new Date().getTime()
-
-    });
+    socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user has joined'));
 
     // socket.broadcast.emit('newMessage', {
     //     from: newMessage.from,
