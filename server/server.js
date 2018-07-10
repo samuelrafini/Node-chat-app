@@ -50,16 +50,12 @@ io.on('connection', (socket) => {
         console.log('createEmail', newEmail);
     });
 
-    socket.on('createMessage', (newMessage) => {
+    socket.on('createMessage', (newMessage, callback) => {
         console.log('createMessage', newMessage);
         //io.emit emit to everyone
 
-        io.emit('newMessage', {
-            from: newMessage.from,
-            text: newMessage.text,
-            createdAt: new Date().getTime()
-        });
-
+        io.emit('newMessage', generateMessage(newMessage.from, newMessage.text));
+        callback('this is from the server');
         //own emit.. emit to everybody but this socket --broadcast
         // socket.broadcast.emit('newMessage', {
         //     from: newMessage.from,
