@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
         //io.emit emit to everyone
 
         io.emit('newMessage', generateMessage(newMessage.from, newMessage.text));
-        callback('this is from the server');
+        callback();
         //own emit.. emit to everybody but this socket --broadcast
         // socket.broadcast.emit('newMessage', {
         //     from: newMessage.from,
