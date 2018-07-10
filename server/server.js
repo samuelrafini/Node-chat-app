@@ -22,11 +22,31 @@ let io = socketIO(server);
 io.on('connection', (socket) => {
     console.log('new user connected');
 
-    socket.emit('newEmail', {
-        from: "sam@example.com",
-        text: "Yoo whats up how are you?",
-        createdAt: 123
+    socket.emit('newMessage', {
+        from: 'Admin',
+        text: 'Welcome to the chat app',
+        createdAt: new Date().getTime()
+
     });
+
+    socket.broadcast.emit('newMessage', {
+        from: 'Admin',
+        text: 'New user has joined',
+        createdAt: new Date().getTime()
+
+    });
+
+    // socket.broadcast.emit('newMessage', {
+    //     from: newMessage.from,
+    //     text: newMessage.text,
+    //     createdAt: new Date().getTime()
+    // });
+
+    // socket.emit('newEmail', {
+    //     from: "sam@example.com",
+    //     text: "Yoo whats up how are you?",
+    //     createdAt: 123
+    // });
 
     // socket.emit('newMessage', {
     //     from: "sam",
@@ -42,12 +62,18 @@ io.on('connection', (socket) => {
         console.log('createMessage', newMessage);
         //io.emit emit to everyone
 
-    
         io.emit('newMessage', {
             from: newMessage.from,
             text: newMessage.text,
             createdAt: new Date().getTime()
-        })
+        });
+
+        //own emit.. emit to everybody but this socket --broadcast
+        // socket.broadcast.emit('newMessage', {
+        //     from: newMessage.from,
+        //     text: newMessage.text,
+        //     createdAt: new Date().getTime()
+        // });
     });
 
     socket.on('disconnect', () => {
