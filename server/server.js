@@ -8,7 +8,7 @@ const publicPath = path.join(__dirname, '../public')
 const express = require('express');
 const socketIO = require('socket.io');
 
-const {generateMessage} = require('./utils/message'); 
+const {generateMessage, generateLocationMessage} = require('./utils/message'); 
 // understand path module
 console.log(__dirname + '/../public');
 console.log(publicPath);
@@ -46,8 +46,13 @@ io.on('connection', (socket) => {
     //     createdAt: 123
     // });
 
-    socket.on('createEmail', (newEmail) => {
-        console.log('createEmail', newEmail);
+    // socket.on('createEmail', (newEmail) => {
+    //     console.log('createEmail', newEmail);
+    // });
+
+    socket.on('createLocationMessage', (coords) => {
+        io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+        console.log(generateLocationMessage('Admin', coords.latitude, coords.longitude));
     });
 
     socket.on('createMessage', (newMessage, callback) => {
