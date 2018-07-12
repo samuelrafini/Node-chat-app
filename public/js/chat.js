@@ -22,6 +22,16 @@ function scrollToBottem () {
 
 socket.on('connect', function () {
     console.log('Connected to server');
+    let params = jQuery.deparam(window.location.search);
+
+    socket.emit('Join', params, function (err) {
+        if(err) {
+            alert(err);
+            window.location.href = '/';
+        }else {
+            console.log('no error');
+        }
+    });
 
     // socket.emit('createEmail', {
     //     to: "john@example.com",

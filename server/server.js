@@ -8,6 +8,7 @@ const publicPath = path.join(__dirname, '../public')
 const express = require('express');
 const socketIO = require('socket.io');
 
+const {isRealString} = require('./utils/validation');
 const {generateMessage, generateLocationMessage} = require('./utils/message'); 
 // understand path module
 console.log(__dirname + '/../public');
@@ -28,6 +29,14 @@ io.on('connection', (socket) => {
 
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user has joined'));
 
+    socket.on('Join', (params, callback) => {
+        console.log(params);
+        if(!isRealString(params.name) || !isRealString(params.room)) {
+            callback('Name and room name are required');
+        }
+
+        callback();
+    })
     // socket.broadcast.emit('newMessage', {
     //     from: newMessage.from,
     //     text: newMessage.text,
